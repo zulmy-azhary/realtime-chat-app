@@ -1,34 +1,19 @@
-import { useState } from "react";
-import { Box, useBreakpointValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import SendMessage from "./SendMessage";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-
-const smVariant = { navigation: 'drawer', navigationButton: true }
-const mdVariant = { navigation: 'sidebar', navigationButton: false }
+import { ToggleProvider } from "../context/toggleContext";
 
 const ChatRoom = ({ children, email }) => {
-  const variants = useBreakpointValue({ base: smVariant, md: mdVariant })
-  const [isSidebarOpen, setSidebarOpen] = useState(false)
-
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen)
-
-	return (
-    <Box minHeight="100vh" height="100vh">
-      <Navbar
-        showSidebarButton={variants?.navigationButton}
-        onShowSidebar={toggleSidebar}
-        email={email}
-      />
-      <Sidebar
-        variant={variants?.navigation}
-        isOpen={isSidebarOpen}
-        onClose={toggleSidebar}
-      />
-      
-      { children }
-      <SendMessage />
-		</Box>
+  return (
+    <ToggleProvider>
+      <Box minHeight="100vh" height="100vh">
+        <Navbar email={email} />
+        <Sidebar />
+        { children }
+        <SendMessage />
+      </Box>
+    </ToggleProvider>
 	);
 };
 

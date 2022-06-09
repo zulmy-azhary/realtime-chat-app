@@ -1,11 +1,12 @@
 import { Avatar, Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { collection, doc, orderBy, query } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useContext } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import ChatRoom from '../../components/ChatRoom';
 import { auth, db } from '../../config/firebase';
+import { ToggleContext } from '../../context/toggleContext';
 import { getOtherEmail } from '../../utils/getOtherEmail';
 
 const Chat = () => {
@@ -15,6 +16,7 @@ const Chat = () => {
   const q = query(collection(db, `chats/${id}/messages`), orderBy('timestamp'));
   const [messages] = useCollectionData(q)
   const [chat] = useDocumentData(doc(db, `chats/${id}`))
+  const props = useContext(ToggleContext);
 
   return (
     <ChatRoom email={getOtherEmail(chat?.users, user)}>
@@ -25,7 +27,7 @@ const Chat = () => {
             sender ? (
               <Flex key={idx} width="100%" justifyContent="flex-end">
                 <Box px={5} py={2} borderLeftRadius={15} borderBottomRightRadius={15} bg="whatsapp.400">
-                  <Text fontSize="sm" fontWeight="semibold" color="black">
+                  <Text fontSize="sm" fontWeight="semibold" color="black" align="end">
                     {message.text}
                   </Text>
                 </Box>

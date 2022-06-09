@@ -3,19 +3,23 @@ import { auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import SignOut from "./SignOut";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useContext } from "react";
+import { ToggleContext } from "../context/toggleContext";
 
-const Navbar = ({showSidebarButton = true, onShowSidebar, email}) => {
+const Navbar = ({email}) => {
   const [user] = useAuthState(auth)
+  const props = useContext(ToggleContext);
+  const { variants, toggleSidebar = true } = props
 
   return (
     <Box bg="whatsapp.500" p={5} pos="fixed" top={0} left={0} right={0} zIndex={99}>
       <Flex justifyContent="space-between" alignItems="center">
-        {showSidebarButton && (
+        {variants?.navigationButton && (
           <IconButton
             icon={<GiHamburgerMenu w={8} h={8} />}
             colorScheme="whiteAlpha"
             variant='ghost'
-            onClick={onShowSidebar}
+            onClick={toggleSidebar}
           />
         )}
         <Text fontSize="lg" fontWeight="semibold" color="white">{email}</Text>

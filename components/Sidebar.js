@@ -21,13 +21,17 @@ import { auth, db } from '../config/firebase';
 import { getOtherEmail } from '../utils/getOtherEmail';
 import { useRouter } from "next/router";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useContext } from 'react';
+import { ToggleContext } from '../context/toggleContext';
 
-const Sidebar = ({ isOpen, variant, onClose }) => {
+const Sidebar = () => {
+  const props = useContext(ToggleContext);
+  const { variants, isSidebarOpen, toggleSidebar } = props;
+
   const [user] = useAuthState(auth)
   const [snapshot, loading, error] = useCollection(collection(db, "chats"));
   const chats = snapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   const router = useRouter();
-  console.log(chats)
 
   const userClickHandler = id => {
     router.push(`/chat/${id}`);
@@ -37,7 +41,7 @@ const Sidebar = ({ isOpen, variant, onClose }) => {
 
   const newChat = async () => {
     const input = prompt('Enter email address');
-    if (!chatExist(input) && user.email !== input) {
+    if (!chatExist(input) && user.email !== input && input) {
       await addDoc(collection(db, "chats"), {users: [user.email, input]})
     }
   }
@@ -64,20 +68,25 @@ const Sidebar = ({ isOpen, variant, onClose }) => {
     )
   }
 
-  return variant === 'sidebar' ? (
+  return variants?.navigation === 'sidebar' ? (
     <Box
       position="fixed"
       left={0}
-      p={5}
+      py="5rem"
       w="300px"
       top={0}
       h="100%"
       bg="gray.100"
+      zIndex={98}
+      overflowX="hidden"
     >
-      <SidebarContent onClick={onClose} />
+      <Divider />
+      <Button onClick={newChat} variant="ghost" _hover={{ bg:"gray.200" }} color="black" width="100%" px={5} py={3} leftIcon={<AiOutlinePlus />} >New Chat</Button>
+      <Divider />
+      <SidebarContent onClick={toggleSidebar} />
     </Box>
   ) : (
-    <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+    <Drawer isOpen={isSidebarOpen} placement="left" onClose={toggleSidebar}>
       <DrawerOverlay>
         <DrawerContent>
           <Flex p={6} justifyContent="space-between" alignItems="center" bg="whatsapp.500">
@@ -88,7 +97,7 @@ const Sidebar = ({ isOpen, variant, onClose }) => {
             <Divider />
             <Button onClick={newChat} variant="ghost" color="black" width="100%" px={5} py={3} leftIcon={<AiOutlinePlus />} >New Chat</Button>
             <Divider />
-            <SidebarContent onClick={onClose} />
+            <SidebarContent onClick={toggleSidebar} />
           </DrawerBody>
         </DrawerContent>
       </DrawerOverlay>
