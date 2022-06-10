@@ -9,19 +9,17 @@ import { ToggleContext } from "../context/toggleContext";
 const Navbar = ({email}) => {
   const [user] = useAuthState(auth)
   const props = useContext(ToggleContext);
-  const { variants, toggleSidebar = true } = props
+  const { toggleSidebar = true } = props
 
   return (
     <Box bg="whatsapp.500" p={5} pos="fixed" top={0} left={0} right={0} zIndex={99}>
       <Flex justifyContent="space-between" alignItems="center">
-        {variants?.navigationButton && (
           <IconButton
             icon={<GiHamburgerMenu w={8} h={8} />}
             colorScheme="whiteAlpha"
             variant='ghost'
             onClick={toggleSidebar}
           />
-        )}
         <Text fontSize="lg" fontWeight="semibold" color="white">{email}</Text>
         <Menu>
           <MenuButton>

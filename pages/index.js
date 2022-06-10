@@ -3,8 +3,8 @@ import { auth } from "../config/firebase";
 import Login from "../components/Login";
 import styles from "../styles/Home.module.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-import ChatRoom from "../components/ChatRoom";
 import { Center, Spinner } from "@chakra-ui/react"
+import Chat from "./chat/[id]";
 
 export default function Home() {
 	const [user, loading] = useAuthState(auth);
@@ -25,7 +25,7 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main className={styles.main}>
-				{user ? <ChatRoom /> : <Login />}
+				{user ? <Chat /> : <Login />}
 			</main>
 		</div>
 	);

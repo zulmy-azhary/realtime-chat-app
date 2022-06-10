@@ -7,8 +7,9 @@ const SignOut = () => {
 	const router = useRouter();
 
 	const signOutHandler = () => {
-		signOut(auth);
-		router.push("/");
+		signOut(auth).then(() => {
+			router.push("/");
+		}).catch(e => console.log(e));
 	}
 
 	return <Text width="100%" align="center" fontWeight="semibold" color="black" onClick={() => signOutHandler()}>Sign Out</Text>;
