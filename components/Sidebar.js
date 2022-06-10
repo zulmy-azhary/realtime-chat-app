@@ -33,7 +33,7 @@ import { getOtherEmail } from '../utils/getOtherEmail';
 import { useRouter } from "next/router";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useContext, useRef } from 'react';
-import { ToggleContext } from '../context/toggleContext';
+import { ToggleContext } from '../context/ToggleContext';
 
 const Sidebar = () => {
   const props = useContext(ToggleContext);

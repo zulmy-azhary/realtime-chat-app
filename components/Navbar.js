@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import SignOut from "./SignOut";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useContext } from "react";
-import { ToggleContext } from "../context/toggleContext";
+import { ToggleContext } from "../context/ToggleContext";
 
 const Navbar = ({email}) => {
   const [user] = useAuthState(auth)
